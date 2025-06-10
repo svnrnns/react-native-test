@@ -1,24 +1,51 @@
-import { createContext, PropsWithChildren, useContext } from 'react';
+import { getItemAsync } from 'expo-secure-store';
+import {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
+interface Session {
+  email: string;
+  name: string;
+}
 type AuthType = {
-  session: string | null;
+  session: Session | undefined;
   isLoading: boolean;
-  signIn: () => void;
-  signOut: () => void;
+  setSession: (session: Session) => void;
 };
 
 const SessionContext = createContext<AuthType | undefined>(undefined);
 
 export function SessionProvider({ children }: PropsWithChildren) {
-  const sampleType: AuthType = {
-    session: null,
-    isLoading: false,
-    signIn: () => {},
-    signOut: () => {},
-  };
+  const [session, setSession] = useState<Session | undefined>(undefined);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const fetch = async () => {
+      // await deleteItemAsync('user');
+      setIsLoading(true);
+      const storeSession = await getItemAsync('user');
+      if (storeSession) setSession(JSON.parse(storeSession) as Session);
+      setIsLoading(false);
+    };
+
+    fetch();
+  }, []);
+
+  const authValue = useMemo<AuthType>(() => {
+    return {
+      session,
+      isLoading,
+      setSession,
+    };
+  }, [session, isLoading]);
 
   return (
-    <SessionContext.Provider value={sampleType}>
+    <SessionContext.Provider value={authValue}>
       {children}
     </SessionContext.Provider>
   );

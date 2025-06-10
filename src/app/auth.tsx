@@ -1,5 +1,9 @@
 import LucideIcon from '@/lib/LucideIcon';
+import { useSession } from '@/lib/session/provider';
+import { useRouter } from 'expo-router';
+import { setItemAsync } from 'expo-secure-store';
 import { useColorScheme } from 'nativewind';
+import { useCallback, useState } from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
@@ -12,6 +16,24 @@ import {
 
 export default function AuthScreen() {
   const { toggleColorScheme } = useColorScheme();
+  const { setSession } = useSession();
+
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
+  const signIn = useCallback(async () => {
+    setLoading(true);
+    const sampleSession = {
+      email: 'someone@mail.com',
+      name: 'Lasaña Friolera',
+    };
+
+    await setItemAsync('user', JSON.stringify(sampleSession));
+    setSession(sampleSession);
+
+    setLoading(false);
+    router.replace('/(main)');
+  }, [router, setSession]);
 
   return (
     <KeyboardAvoidingView
@@ -37,7 +59,10 @@ export default function AuthScreen() {
             secureTextEntry={true}
             className="w-full mt-1.5 bg-box text-heading placeholder:text-placeholder py-3 px-4 rounded-lg"
           />
-          <Pressable>
+          <Pressable
+            onPress={signIn}
+            className={`${loading && 'pointer-events-none opacity-60'}`}
+          >
             <Text className="p-3 mt-6 leading-none rounded-lg text-center bg-main text-white font-medium">
               Sign in
             </Text>
