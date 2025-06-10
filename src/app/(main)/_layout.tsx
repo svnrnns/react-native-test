@@ -1,15 +1,20 @@
 import AuthGuard from '@/lib/guards/AuthGuard';
-import { Stack } from 'expo-router';
+import { Tabs } from 'expo-router';
 
 export default function ProtectedLayout() {
   return (
     <AuthGuard>
-      <Stack
+      <Tabs
         initialRouteName="index"
-        screenOptions={{ headerShown: false }}
+        screenOptions={{
+          headerShown: false,
+          tabBarStyle: { display: 'none' },
+        }}
       >
-        <Stack.Screen name="index" />
-      </Stack>
+        <Tabs.Screen name="index" />
+        <Tabs.Screen name="streaks" />
+        <Tabs.Screen name="add-habit" />
+      </Tabs>
     </AuthGuard>
   );
 }

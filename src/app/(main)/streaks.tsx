@@ -1,7 +1,7 @@
 import MainTabBar from '@/features/main/MainTabBar';
 import { SafeAreaView, Text, View } from 'react-native';
 
-export default function Index() {
+export default function StreaksScreen() {
   return (
     <>
       <SafeAreaView
@@ -11,7 +11,7 @@ export default function Index() {
         className="bg-body"
       >
         <View className="flex-1 bg-indigo-50 flex items-center justify-center">
-          <Text className="">Index</Text>
+          <Text className="">Streaks</Text>
         </View>
       </SafeAreaView>
       <MainTabBar />
