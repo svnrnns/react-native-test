@@ -6,7 +6,7 @@ export default function ProtectedLayout() {
     <AuthGuard>
       <Stack
         initialRouteName="index"
-        screenOptions={{ headerShown: true }}
+        screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="index" />
       </Stack>

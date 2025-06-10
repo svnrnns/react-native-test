@@ -12,7 +12,7 @@ export default function AuthGuard({ children }: PropsWithChildren) {
         <Text>Loading...</Text>
       </View>
     );
-  console.log(session, isLoading);
+
   if (!session) return <Redirect href="/auth" />;
 
   return children;

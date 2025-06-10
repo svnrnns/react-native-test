@@ -17,9 +17,8 @@ import {
 export default function AuthScreen() {
   const { toggleColorScheme } = useColorScheme();
   const { setSession } = useSession();
-
-  const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const signIn = useCallback(async () => {
     setLoading(true);
