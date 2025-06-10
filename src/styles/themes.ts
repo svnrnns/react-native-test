@@ -1,5 +1,26 @@
 import { vars } from 'nativewind';
 
+const hexToRgb = (hex: string) => {
+  // Remove # if present
+  hex = hex.replace(/^#/, '');
+
+  // Expand 3-digit hex to 6-digit if necessary
+  if (hex.length === 3) {
+    hex = hex
+      .split('')
+      .map((char) => char + char)
+      .join('');
+  }
+
+  // Parse hex to RGB
+  const bigint = parseInt(hex, 16);
+  const r = (bigint >> 16) & 255;
+  const g = (bigint >> 8) & 255;
+  const b = bigint & 255;
+
+  return `${r} ${g} ${b}`;
+};
+
 const light = {
   body: '#fff',
   module: '#fff',
@@ -37,7 +58,7 @@ const themes = {
     Object.entries(light).reduce(
       (acc, [key, value]) => ({
         ...acc,
-        [`--color-${key}`]: value,
+        [`--color-${key}`]: hexToRgb(value),
       }),
       {}
     )
@@ -46,7 +67,7 @@ const themes = {
     Object.entries(dark).reduce(
       (acc, [key, value]) => ({
         ...acc,
-        [`--color-${key}`]: value,
+        [`--color-${key}`]: hexToRgb(value),
       }),
       {}
     )
