@@ -8,11 +8,17 @@ interface SelectorItem {
 
 interface Props {
   items: SelectorItem[];
+  initialSelectedItemId: string;
+  onChange: (id: string) => void;
 }
 
-export default function InlineSelector({ items }: Props) {
+export default function InlineSelector({
+  items,
+  initialSelectedItemId,
+  onChange,
+}: Props) {
   const [selectedItemId, setSelectedItemId] = useState<string | undefined>(
-    undefined
+    initialSelectedItemId ?? undefined
   );
   return (
     <View className="w-full py-2 gap rounded-lg bg-box flex flex-row items-center">
@@ -21,7 +27,10 @@ export default function InlineSelector({ items }: Props) {
           className="w-full px-1.5"
           style={{ width: `${100 / items.length}%` }}
           key={el.id}
-          onPress={() => setSelectedItemId(el.id)}
+          onPress={() => {
+            setSelectedItemId(el.id);
+            onChange(el.id);
+          }}
         >
           <Text
             className={`${

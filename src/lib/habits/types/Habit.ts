@@ -4,6 +4,6 @@ export interface Habit {
   description: string;
   streak_count: number;
   frequency: 'daily' | 'weekly' | 'monthly';
-  last_completed: Date;
+  last_completed: Date | undefined;
   created_at: Date;
 }

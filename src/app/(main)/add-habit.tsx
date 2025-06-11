@@ -3,11 +3,16 @@ import InlineSelector from '@/components/ui/InlineSelector';
 import Input from '@/components/ui/Input';
 import MainTabBar from '@/features/main/MainTabBar';
 import { Habit } from '@/lib/habits/types/Habit';
-import { useState } from 'react';
+import { useRouter } from 'expo-router';
+import { getItemAsync, setItemAsync } from 'expo-secure-store';
+import { eventEmit } from 'mitt-react';
+import { useCallback, useState } from 'react';
 import { SafeAreaView, View } from 'react-native';
 
+type Frequency = Habit['frequency'];
+
 interface FrequencyItem {
-  id: Habit['frequency'];
+  id: Frequency;
   name: string;
 }
 const FREQUENCIES: FrequencyItem[] = [
@@ -26,8 +31,32 @@ const FREQUENCIES: FrequencyItem[] = [
 ];
 
 export default function AddHabitScreen() {
+  const router = useRouter();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [frequency, setFrequency] = useState<Frequency>('daily');
+
+  const submit = useCallback(async () => {
+    if (!title.trim() || !description.trim()) return;
+
+    const newHabit: Habit = {
+      title,
+      description,
+      frequency,
+      streak_count: 0,
+      last_completed: undefined,
+      created_at: new Date(),
+    };
+
+    const habitsData = await getItemAsync('habits');
+    const existingHabits: Habit[] = habitsData ? JSON.parse(habitsData) : [];
+
+    const updatedHabits = [...existingHabits, newHabit];
+    await setItemAsync('habits', JSON.stringify(updatedHabits));
+
+    eventEmit('onNewHabit');
+    router.push('/(main)');
+  }, [title, description, frequency, router]);
   return (
     <>
       <SafeAreaView
@@ -47,10 +76,14 @@ export default function AddHabitScreen() {
             value={description}
             onChange={(text) => setDescription(text)}
           />
-          <InlineSelector items={FREQUENCIES} />
+          <InlineSelector
+            items={FREQUENCIES}
+            initialSelectedItemId={FREQUENCIES[0].id}
+            onChange={(newFrequency) => setFrequency(newFrequency as Frequency)}
+          />
           <Button
             disabled={false}
-            onPress={() => {}}
+            onPress={submit}
           >
             Add Habit
           </Button>
