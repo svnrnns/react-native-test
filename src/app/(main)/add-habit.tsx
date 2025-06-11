@@ -3,9 +3,9 @@ import InlineSelector from '@/components/ui/InlineSelector';
 import Input from '@/components/ui/Input';
 import MainTabBar from '@/features/main/MainTabBar';
 import { Habit } from '@/lib/habits/types/Habit';
+import { eventEmit } from '@/lib/mitt';
 import { useRouter } from 'expo-router';
 import { getItemAsync, setItemAsync } from 'expo-secure-store';
-import { eventEmit } from 'mitt-react';
 import { useCallback, useState } from 'react';
 import { SafeAreaView, View } from 'react-native';
 
