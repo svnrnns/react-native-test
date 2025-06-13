@@ -1,18 +1,11 @@
 import HabitCard from '@/features/main/habits/HabitCard';
-import MainTabBar from '@/features/main/MainTabBar';
 import { Habit } from '@/lib/habits/types/Habit';
 import { useEventListener } from '@/lib/mitt';
 
 import { getItemAsync } from 'expo-secure-store';
 import { useEffect, useRef, useState } from 'react';
-import {
-  Pressable,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  Text,
-  View,
-} from 'react-native';
+import { Pressable, ScrollView, StatusBar, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import ToggleThemeIcon from '@/components/ui/ToggleThemeIcon';
 import { useThemeVariables } from '@/styles/ThemeProvider';
@@ -69,6 +62,7 @@ export default function Index() {
           flex: 1,
         }}
         className="bg-body"
+        edges={['top']}
       >
         <View className="flex-1 flex flex-col">
           <View className="flex flex-row items-center justify-between px-12">
@@ -93,7 +87,6 @@ export default function Index() {
           </ScrollView>
         </View>
       </SafeAreaView>
-      <MainTabBar />
       <BottomSheet
         ref={sheetRef}
         snapPoints={['33%', '66%']}

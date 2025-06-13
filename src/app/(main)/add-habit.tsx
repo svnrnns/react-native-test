@@ -1,14 +1,14 @@
 import Button from '@/components/ui/Button';
 import InlineSelector from '@/components/ui/InlineSelector';
 import Input from '@/components/ui/Input';
-import MainTabBar from '@/features/main/MainTabBar';
 import { Habit } from '@/lib/habits/types/Habit';
 import { eventEmit } from '@/lib/mitt';
 import * as Haptics from 'expo-haptics';
 import { useRouter } from 'expo-router';
 import { getItemAsync, setItemAsync } from 'expo-secure-store';
 import { useCallback, useState } from 'react';
-import { KeyboardAvoidingView, Platform, SafeAreaView } from 'react-native';
+import { KeyboardAvoidingView, Platform } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type Frequency = Habit['frequency'];
 
@@ -61,41 +61,39 @@ export default function AddHabitScreen() {
   }, [title, description, frequency, router]);
 
   return (
-    <>
-      <SafeAreaView
-        style={{
-          flex: 1,
-        }}
-        className="bg-body"
+    <SafeAreaView
+      style={{
+        flex: 1,
+      }}
+      className="bg-body"
+      edges={['top']}
+    >
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        className="flex-1 p-6 flex gap-6 items-center justify-center"
       >
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          className="flex-1 p-6 flex gap-6 items-center justify-center"
+        <Input
+          label="Title"
+          value={title}
+          onChange={(text) => setTitle(text)}
+        />
+        <Input
+          label="Description"
+          value={description}
+          onChange={(text) => setDescription(text)}
+        />
+        <InlineSelector
+          items={FREQUENCIES}
+          initialSelectedItemId={FREQUENCIES[0].id}
+          onChange={(newFrequency) => setFrequency(newFrequency as Frequency)}
+        />
+        <Button
+          disabled={false}
+          onPress={submit}
         >
-          <Input
-            label="Title"
-            value={title}
-            onChange={(text) => setTitle(text)}
-          />
-          <Input
-            label="Description"
-            value={description}
-            onChange={(text) => setDescription(text)}
-          />
-          <InlineSelector
-            items={FREQUENCIES}
-            initialSelectedItemId={FREQUENCIES[0].id}
-            onChange={(newFrequency) => setFrequency(newFrequency as Frequency)}
-          />
-          <Button
-            disabled={false}
-            onPress={submit}
-          >
-            Add Habit
-          </Button>
-        </KeyboardAvoidingView>
-      </SafeAreaView>
-      <MainTabBar />
-    </>
+          Add Habit
+        </Button>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
