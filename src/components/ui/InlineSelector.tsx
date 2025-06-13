@@ -35,7 +35,7 @@ export default function InlineSelector({
           <Text
             className={`${
               selectedItemId === el.id && 'bg-body'
-            } p-2 font-medium text-center shadow shadow-black/10 rounded-lg`}
+            } p-2 font-medium text-center text-heading shadow shadow-black/10 rounded-lg`}
           >
             {el.name}
           </Text>

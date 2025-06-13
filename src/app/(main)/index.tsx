@@ -110,8 +110,8 @@ export default function Index() {
             </Pressable>
           </View>
           <Text className="mt-3 text-font">
-            I believe this won&apos;t be implemenet at all xd, just testing
-            React Native
+            I believe this won&apos;t be implement at all xd, just testing React
+            Native
           </Text>
         </BottomSheetView>
       </BottomSheet>
