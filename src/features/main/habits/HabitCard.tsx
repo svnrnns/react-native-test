@@ -1,5 +1,6 @@
 import { Habit } from '@/lib/habits/types/Habit';
 import LucideIcon from '@/lib/LucideIcon';
+import { eventEmit } from '@/lib/mitt';
 import * as Haptics from 'expo-haptics';
 import { useCallback } from 'react';
 import { Pressable, Text, View } from 'react-native';
@@ -24,23 +25,19 @@ const vibrate = async () => {
 export default function HabitCard({ habit }: Props) {
   const scale = useSharedValue(1);
 
-  const enterBlink = useCallback(() => {
+  const blinkAnimation = useCallback(() => {
     scale.value = withSpring(1.05);
-  }, [scale]);
-
-  const exitBlink = useCallback(() => {
-    scale.value = withSpring(1);
+    setTimeout(() => {
+      scale.value = withSpring(1);
+    }, 100);
   }, [scale]);
 
   return (
     <Pressable
       onLongPress={async () => {
-        enterBlink();
-        // editHabit
+        blinkAnimation();
+        eventEmit('onHabitEdit', habit);
         await vibrate();
-      }}
-      onPressOut={() => {
-        exitBlink();
       }}
     >
       <Animated.View
