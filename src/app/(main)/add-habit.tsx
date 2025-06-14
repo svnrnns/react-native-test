@@ -31,6 +31,12 @@ const FREQUENCIES: FrequencyItem[] = [
   },
 ];
 
+const generateUUID = () => {
+  const timestamp = Date.now().toString(36);
+  const randomStr = Math.random().toString(36).slice(2, 10);
+  return `${timestamp}-${randomStr}`;
+};
+
 export default function AddHabitScreen() {
   const router = useRouter();
   const [title, setTitle] = useState('');
@@ -41,6 +47,7 @@ export default function AddHabitScreen() {
     if (!title.trim() || !description.trim()) return;
 
     const newHabit: Habit = {
+      id: generateUUID(), // Add UUID to the habit
       title,
       description,
       frequency,

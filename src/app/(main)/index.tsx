@@ -3,7 +3,7 @@ import { Habit } from '@/lib/habits/types/Habit';
 import { useEventListener } from '@/lib/mitt';
 
 import { getItemAsync } from 'expo-secure-store';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Pressable, ScrollView, StatusBar, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -54,6 +54,13 @@ export default function Index() {
     sheetRef.current?.snapToIndex(0);
   });
 
+  const onDeleteHabit = useCallback((id: string) => {
+    setHabits((prevHabits) => {
+      const updatedHabits = prevHabits.filter((el) => el.id !== id);
+      return updatedHabits;
+    });
+  }, []);
+
   return (
     <>
       <StatusBar />
@@ -69,7 +76,10 @@ export default function Index() {
             <Text className="text-2xl font-bold text-heading ">Habits</Text>
             <ToggleThemeIcon />
           </View>
-          <ScrollView className="p-6">
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            className="p-6"
+          >
             {/* no habits */}
             {habits.length === 0 && (
               <Text className="text-font">
@@ -78,11 +88,14 @@ export default function Index() {
             )}
             {/* yep there are habits */}
             {habits.length > 0 &&
-              habits.map((el, i) => (
-                <HabitCard
-                  habit={el}
-                  key={i}
-                />
+              habits.map((el) => (
+                <View key={el.id}>
+                  <HabitCard
+                    habit={el}
+                    onDelete={() => onDeleteHabit(el.id)}
+                  />
+                  <View className="h-3" />
+                </View>
               ))}
           </ScrollView>
         </View>

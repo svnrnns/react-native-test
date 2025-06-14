@@ -33,7 +33,7 @@ const light = {
   main: '#5b51d8',
   success: '#4edd76',
   warning: '#fb923c',
-  danger: '#f87171',
+  danger: '#e62c2c',
   info: '#0198ff',
 };
 
