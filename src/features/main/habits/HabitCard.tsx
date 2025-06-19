@@ -1,7 +1,7 @@
 import { Habit } from '@/lib/habits/types/Habit';
 import LucideIcon from '@/lib/LucideIcon';
-import { eventEmit } from '@/lib/mitt';
 import * as Haptics from 'expo-haptics';
+import { eventEmit } from 'mitt-react-native';
 import { useCallback, useRef } from 'react';
 import { Pressable, Text, View } from 'react-native';
 import Swipeable, {

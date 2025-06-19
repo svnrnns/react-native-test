@@ -1,6 +1,6 @@
 import HabitCard from '@/features/main/habits/HabitCard';
 import { Habit } from '@/lib/habits/types/Habit';
-import { useEventListener } from '@/lib/mitt';
+import { useEventListener } from 'mitt-react-native';
 
 import { getItemAsync } from 'expo-secure-store';
 import { useCallback, useEffect, useRef, useState } from 'react';
